@@ -3,6 +3,7 @@ import LoginForm from './pages/Login';
 import RegisterForm from './pages/Register';
 import Home from './pages/Home';
 import Feeds from './components/Feeds';
+import ProfilePage from './pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
     path: '/Feeds',
     element: <Feeds />,
   },
+  {
+    path: '/Profile',
+    element: <ProfilePage />,
+  },
+  
 ]);
 
 function App() {

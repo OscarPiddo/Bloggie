@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../components/NavBar";
+import Sidebar from "../components/SideBar";
 import Feeds from "../components/Feeds";
 
 const Home = () => {
