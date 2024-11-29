@@ -10,16 +10,16 @@ const Sidebar = () => {
       const response = await fetch("https://davidwaga.pythonanywhere.com/api/v1/logout", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("authToken")}`, // Assuming token is saved in localStorage
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
-        // Clear the token from localStorage
+        // Remove the token from localStorage
         localStorage.removeItem("authToken");
 
-        // Redirect to login page with a success message
+        // Redirect to the login page with a success message
         navigate("/", { state: { message: "Logged out successfully!" } });
       } else {
         console.error("Logout failed:", response.statusText);

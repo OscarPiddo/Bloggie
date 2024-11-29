@@ -5,33 +5,41 @@ import ProfilePicture from "../assets/Images/Avatars/ProfileUser.png";
 import axios from "axios";
 
 function ProfilePage() {
+  // User info (can be replaced with props/context if dynamic)
   const [userInfo] = useState({
-    name: "Your Name",
-    username: "your_username",
-    bio: "This is a short bio about you. Share something interesting!",
+    name: "Oliver Twist",
+    username: "callmeoliver",
+    bio: "It's Me, Hi!!! I'm the problem, it's ME!!!",
     profilePicture: ProfilePicture,
     joinedDate: "January 2023",
   });
 
-  const [userPosts, setUserPosts] = useState([]); // User posts state
+  // State for posts, loading, and error handling
+  const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch posts and filter by username
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
           "https://davidwaga.pythonanywhere.com/api/v1/post"
         );
-        // Filter posts by username or userId
+
+        // Log the response for debugging
+        console.log("API Response:", response.data);
+
+        // Filter posts by the current user's username
         const filteredPosts = response.data.filter(
           (post) => post.author === userInfo.username
         );
+
         setUserPosts(filteredPosts);
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching posts:", err);
         setError("Failed to load posts. Please try again later.");
+      } finally {
         setLoading(false);
       }
     };
@@ -76,14 +84,14 @@ function ProfilePage() {
             ) : error ? (
               <p className="text-red-500">{error}</p>
             ) : userPosts.length > 0 ? (
-              userPosts.map((post, index) => (
+              userPosts.map((post) => (
                 <Post
-                  key={index}
+                  key={post.id} // Use unique ID from API
                   author={post.author}
-                  date={post.date}
+                  date={post.created_at} // Adjust to match API field
                   content={post.content}
-                  images={post.images}
-                  profilePicture={post.profilePicture}
+                  images={post.images || []} // Default to empty array if missing
+                  profilePicture={userInfo.profilePicture} // Assume user's own picture
                 />
               ))
             ) : (

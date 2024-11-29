@@ -1,43 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Post from "../components/Post";
-import Avatar1 from "../assets/Images/Avatars/Greg.png";
-import Avatar2 from "../assets/Images/Avatars/John.png";
-import Avatar3 from "../assets/Images/Avatars/Stella.png";
-import City from "../assets/Images/city.jpg";
-import City2 from "../assets/Images/city2.jpg";
-import Food from "../assets/Images/food.jpg";
-import Nature from "../assets/Images/nature.jpg";
+import ProfilePicture from "../assets/Images/Avatars/ProfileUser.png";
 
 function Feeds() {
-  // Example posts with corrected image structure
-  const examplePosts = [
-    {
-      author: "Greg Ssema",
-      date: "September 21, 2024",
-      content: "Had a great day exploring the city!",
-      images: [City, City2],
-      profilePicture: Avatar1,
-    },
-    {
-      author: "John Otim",
-      date: "September 20, 2024",
-      content: "Loving this new recipe I tried today. 🍳",
-      images: [Food],
-      profilePicture: Avatar2,
-    },
-    {
-      author: "Stella Nankya",
-      date: "September 18, 2024",
-      content: "Nature always calms my soul. 🌿",
-      images: [Nature],
-      profilePicture: Avatar3,
-    },
-  ];
-
   const [apiPosts, setApiPosts] = useState([]);
   const [content, setContent] = useState("");
-  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -60,18 +28,6 @@ function Feeds() {
     fetchPosts();
   }, []);
 
-  // Handle image uploads
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => [...prevImages, ...imageUrls]);
-  };
-
-  // Cleanup image previews on unmount
-  useEffect(() => {
-    return () => images.forEach((url) => URL.revokeObjectURL(url));
-  }, [images]);
-
   // Create a new post
   const handleCreatePost = async (e) => {
     e.preventDefault();
@@ -82,11 +38,8 @@ function Feeds() {
     }
 
     const newPost = {
-      author: "Current User", // Replace with logged-in user details
-      date: new Date().toISOString(),
+      title: "My New Post", // Add a default title or prompt user for one
       content,
-      images,
-      profilePicture: "https://via.placeholder.com/50?text=User", // Replace dynamically
     };
 
     try {
@@ -104,8 +57,6 @@ function Feeds() {
 
     // Reset form
     setContent("");
-    setImages([]);
-    e.target.reset();
   };
 
   return (
@@ -121,27 +72,6 @@ function Feeds() {
             className="w-full bg-gray-100 rounded-lg p-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#ff5722]"
             rows="4"
           ></textarea>
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageUpload}
-              className="text-sm"
-            />
-          </div>
-          {images.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {images.map((image, idx) => (
-                <img
-                  key={idx}
-                  src={image}
-                  alt={`Preview ${idx + 1}`}
-                  className="w-full h-24 object-cover rounded-lg"
-                />
-              ))}
-            </div>
-          )}
           <button
             type="submit"
             className="w-full py-2 px-4 rounded-lg bg-[#ff5722] text-white font-medium hover:bg-[#e64a19]"
@@ -157,32 +87,18 @@ function Feeds() {
 
         {error && (
           <p className="text-red-500">
-            {error}. However, example posts are shown below:
+            {error}
           </p>
         )}
 
-        {/* API Posts */}
-        {apiPosts.length > 0 &&
-          apiPosts.map((post, index) => (
-            <Post
-              key={`api-${post.id || index}`}
-              author={post.author || "Anonymous"}
-              date={post.date || "Unknown Date"}
-              content={post.content || ""}
-              images={Array.isArray(post.images) ? post.images : []}
-              profilePicture={post.profilePicture || "https://via.placeholder.com/50"}
-            />
-          ))}
-
-        {/* Example Posts */}
-        {examplePosts.map((post, index) => (
+        {apiPosts.map((post) => (
           <Post
-            key={`example-${index}`}
-            author={post.author}
-            date={post.date}
+            key={post.id}
+            author="API User"
+            date={new Date(post.created_at).toLocaleDateString()}
+            title={post.title}
             content={post.content}
-            images={post.images}
-            profilePicture={post.profilePicture}
+            profilePicture={ProfilePicture}
           />
         ))}
       </div>
