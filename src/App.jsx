@@ -7,7 +7,8 @@ import RegisterForm from "./pages/Register";
 import Home from "./pages/Home";
 import Feeds from "./components/Feeds";
 import ProfilePage from "./pages/Profile";
-
+import { UserProvider } from "./context/UserContext"; 
+import ProtectedRoute from "./components/ProtectedRoute"; 
 
 const router = createBrowserRouter([
   {
@@ -20,25 +21,36 @@ const router = createBrowserRouter([
   },
   {
     path: "/Home",
-    element: <Home />,
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/Feeds",
-    element: <Feeds />,
+    element: (
+      <ProtectedRoute>
+        <Feeds />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/Profile",
-    element: <ProfilePage />,
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
   },
- 
 ]);
 
 function App() {
   return (
-    <div>
-      <ToastContainer />  
+    <UserProvider>
+      <ToastContainer />
       <RouterProvider router={router} />
-    </div>
+    </UserProvider>
   );
 }
 
