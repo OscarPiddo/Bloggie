@@ -1,37 +1,42 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LoginForm from './pages/Login'; 
-import RegisterForm from './pages/Register';
-import Home from './pages/Home';
-import Feeds from './components/Feeds';
-import ProfilePage from './pages/Profile';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import LoginForm from "./pages/Login";
+import RegisterForm from "./pages/Register";
+import Home from "./pages/Home";
+import Feeds from "./components/Feeds";
+import ProfilePage from "./pages/Profile";
+
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <LoginForm />
+    path: "/",
+    element: <LoginForm />,
   },
   {
-    path: '/register',
-    element: <RegisterForm/>,
+    path: "/register",
+    element: <RegisterForm />,
   },
   {
-    path: '/Home',
+    path: "/Home",
     element: <Home />,
   },
   {
-    path: '/Feeds',
+    path: "/Feeds",
     element: <Feeds />,
   },
   {
-    path: '/Profile',
+    path: "/Profile",
     element: <ProfilePage />,
   },
-  
+ 
 ]);
 
 function App() {
   return (
     <div>
+      <ToastContainer />  
       <RouterProvider router={router} />
     </div>
   );

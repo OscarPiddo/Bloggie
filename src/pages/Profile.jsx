@@ -76,28 +76,7 @@ function ProfilePage() {
             </div>
           </div>
 
-          {/* User Posts */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-800">Your Posts</h2>
-            {loading ? (
-              <p className="text-gray-600">Loading posts...</p>
-            ) : error ? (
-              <p className="text-red-500">{error}</p>
-            ) : userPosts.length > 0 ? (
-              userPosts.map((post) => (
-                <Post
-                  key={post.id} // Use unique ID from API
-                  author={post.author}
-                  date={post.created_at} // Adjust to match API field
-                  content={post.content}
-                  images={post.images || []} // Default to empty array if missing
-                  profilePicture={userInfo.profilePicture} // Assume user's own picture
-                />
-              ))
-            ) : (
-              <p className="text-gray-600">You haven't created any posts yet.</p>
-            )}
-          </div>
+          
         </div>
       </div>
     </div>
